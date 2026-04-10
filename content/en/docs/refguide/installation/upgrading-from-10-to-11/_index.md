@@ -101,11 +101,19 @@ In a Microflow, this distinction exists and the expression would yield `false`.
 
 Moreover, on the client side a String attribute with a value set to `empty` would be treated as if it contains `''`. This made it impossible to check in a Nanoflow whether an attribute is `empty` or if it has an empty String value `''`.
 
+#### Mendix 11.0.0
+
 In Mendix 11.0.0, we have made this behavior consistent. Now, strings are handled in the same way no matter where you use them. 
 
 We understand that this change might cause unexpected changes in existing applications migrated from older versions of Mendix. 
 
-We recommend carefully analyzing all expressions that are comparing strings against `''` or `empty` and doing extensive testing after the migration. 
+#### Mendix 11.6.3
+
+In Mendix 11.6.3, we introduced [an option](https://docs.mendix.com/refguide/app-settings/#new-string-behavior) to toggle between the old and the new client-side String attribute behaviors. Projects migrating from Mendix 10 to 11 will retain the old String behavior unless you manually switch to the new one.
+
+It is recommended to migrate your pre-existing projects to use the new behavior as soon as possible. The new behavior will improve consistency between nanoflows and microflows, which will lead to fewer bugs in your applications.
+
+Make sure to carefully analyze all expressions that are comparing strings against `''` or `empty` and do extensive testing after the migration. 
 
 #### Example 1
 
@@ -140,15 +148,15 @@ In Mendix 11.0 you won’t run into any ambiguity around this anymore.
 #### Example 3
 
 ```
-$User/Name + "@mendix.com"
+$User/Name + "@siemens.com"
 ```
 
-In this example, Mendix will handle string concatenation correctly no matter if `$User/Name` is `empty` or `''`. The resulting string will be `@mendix.com`.
+In this example, Mendix will handle string concatenation correctly no matter if `$User/Name` is `empty` or `''`. The resulting string will be `@siemens.com`.
 
 In this particular example, if you want to prevent the generation of email addresses without the first part you should add a validation check before doing concatenation: 
 
 ```
-if trim($User/Name) = '' then '' else $User/Name + "@mendix.com"
+if trim($User/Name) = '' then '' else $User/Name + "@siemens.com"
 ```
 
 ### React 19 {#react-19}
